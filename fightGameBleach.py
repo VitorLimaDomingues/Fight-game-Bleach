@@ -37,9 +37,18 @@ def escolher(personagens):
     for indice, personagem in enumerate(personagens, start=1):
         print(f"{indice} - {personagem['nome']}")
 
-    escolha = int(input("Escolha um personagem: "))
+    while True:
+        try: 
+            escolha = int(input("Escolha um personagem: "))
 
-    return personagens[escolha - 1]
+            if 1 <= escolha <= len(personagens):
+                return personagens[escolha - 1]
+            else:
+                print("Personagem inexistente! Tente novamente.")
+
+
+        except ValueError:
+            print("Digite apenas números!")
 
 personagens = [ichigo, ulquiorra]
 personagemEscolhido = escolher(personagens)
