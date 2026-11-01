@@ -25,8 +25,21 @@ ulquiorraHabilidades = [
     {"nome": "Cero", "dano": 20}
 ]
 
+# Criando os personagens através da função criarPersonagem
 ichigo = criarPersonagem("Ichigo Kurosaki", 100, 5, 20, ichigoHabilidades)
 ulquiorra = criarPersonagem("Ulquiorra Ciffer", 100, 7, 18, ulquiorraHabilidades)
 
 print(ichigo)
 print(ulquiorra)
+
+# Função para escolha de personagem
+def escolher(personagens):
+    for indice, personagem in enumerate(personagens, start=1):
+        print(f"{indice} - {personagem['nome']}")
+
+    escolha = int(input("Escolha um personagem: "))
+
+    return personagens[escolha - 1]
+
+personagens = [ichigo, ulquiorra]
+personagemEscolhido = escolher(personagens)
