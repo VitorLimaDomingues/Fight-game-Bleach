@@ -1,3 +1,5 @@
+import random
+
 # Jogo de luta inspirado no anime Bleach
 
 # Função para criação dos personagens
@@ -56,6 +58,7 @@ def escolherPersonagem(personagens):
         except ValueError:
             print("Digite apenas números!")
 
+# Função para que o usuário escolha seu adversário
 def escolherAdversario(personagens):
     while True:
         try:
@@ -84,6 +87,57 @@ def escolherAdversario(personagens):
         except ValueError:
             print("Digite apenas números!")
 
+# Função para iniciar a luta
+def lutar(jogador, adversario):
+    print("Lutem!\n")
+
+    while jogador["vida"] > 0 and adversario["vida"] > 0:
+        print(f"{jogador["nome"]} - {jogador["vida"]}")
+        print(f"{adversario["nome"]} - {adversario["vida"]}\n")
+
+        try:
+            for indice, golpe in enumerate(jogador["golpes"], start=1):
+                print(f"{indice} - {golpe["nome"]} | Dano: {golpe["dano"]}")
+
+
+            # escolha de golpe do usuário
+            escolhaGolpe = int(input("Escolha o golpe que deseja utilizar: "))
+
+            if 1 <= escolhaGolpe <= len(jogador["golpes"]):
+                golpeEscolhido = jogador["golpes"][escolhaGolpe - 1]
+
+                vidaRestante = adversario["vida"] - golpeEscolhido["dano"]
+
+                adversario["vida"] = vidaRestante
+
+            else:
+                print("Golpe inexistente!")
+
+            print(adversario["vida"])
+
+            # escolha de golpe da IA
+            if adversario["vida"] > 0:
+                golpeEscolhidoIA = escolherGolpeIA(adversario, jogador)
+
+                jogador["vida"] -= golpeEscolhidoIA["dano"]
+
+                print(f"{adversario["nome"]} utilizou {golpeEscolhidoIA["nome"]}!")
+
+            print(jogador["vida"])
+
+        except ValueError:
+            print("Digite apenas números!")
+
+# Função para escolha de golpes do adversário
+def escolherGolpeIA(adversario, jogador):
+    for golpe in adversario["golpes"]:
+        if golpe["dano"] >= jogador["vida"]:
+            return golpe
+
+    return random.choice(adversario["golpes"])
+            
+
+
 # Função exibir informação dos personagens
 def informacaoDosPersonagens(personagem):
 
@@ -100,5 +154,9 @@ def informacaoDosPersonagens(personagem):
 
 
 personagens = [ichigo, ulquiorra]
+# Variável para armazenar escolha do usuário
 personagemEscolhido = escolherPersonagem(personagens)
+# Variável para armazenar escolha de adversário do usuário
 personagemAdversario = escolherAdversario(personagens)
+# Variável para começar a luta
+lutar(personagemEscolhido, personagemAdversario)
