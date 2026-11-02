@@ -1,7 +1,6 @@
 # Jogo de luta inspirado no anime Bleach
 
 # Função para criação dos personagens
-
 def criarPersonagem(nome, vida, ataque, defesa, golpes):
     personagem = {
         "nome": nome,
@@ -14,7 +13,6 @@ def criarPersonagem(nome, vida, ataque, defesa, golpes):
     return personagem
 
 # Golpes e Transformações
-
 ichigoHabilidades = [
     {"nome": "Getsuga Tenshou", "dano": 30},
     {"nome": "Estocada", "dano": 12},
@@ -58,6 +56,34 @@ def escolherPersonagem(personagens):
         except ValueError:
             print("Digite apenas números!")
 
+def escolherAdversario(personagens):
+    while True:
+        try:
+            for indice, personagem in enumerate(personagens, start=1):
+                print(f"{indice} - {personagem["nome"]}")
+
+            escolha = int(input("Escolha seu adversário: "))
+            print("\n")
+
+
+            if 1 <= escolha <= len(personagens):
+                personagemAdversario = personagens[escolha - 1]
+
+                informacaoDosPersonagens(personagemAdversario)
+
+                confirmar = str(input("Deseja escolher ele mesmo (S/N): ")).strip().upper()
+
+                if confirmar == "S":
+                    return personagemAdversario
+                else:
+                    print("\n")
+
+            else:
+                print("Personagem inexistente! Tente novamente.")
+
+        except ValueError:
+            print("Digite apenas números!")
+
 # Função exibir informação dos personagens
 def informacaoDosPersonagens(personagem):
 
@@ -72,5 +98,7 @@ def informacaoDosPersonagens(personagem):
         print(f"- {golpe['nome']} | Dano: {golpe['dano']}")
     print("-" * 30)
 
+
 personagens = [ichigo, ulquiorra]
 personagemEscolhido = escolherPersonagem(personagens)
+personagemAdversario = escolherAdversario(personagens)
