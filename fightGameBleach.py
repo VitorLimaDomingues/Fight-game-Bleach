@@ -29,20 +29,28 @@ ulquiorraHabilidades = [
 ichigo = criarPersonagem("Ichigo Kurosaki", 100, 5, 20, ichigoHabilidades)
 ulquiorra = criarPersonagem("Ulquiorra Ciffer", 100, 7, 18, ulquiorraHabilidades)
 
-print(ichigo)
-print(ulquiorra)
-
 # Função para escolha de personagem
-def escolher(personagens):
-    for indice, personagem in enumerate(personagens, start=1):
-        print(f"{indice} - {personagem['nome']}")
-
+def escolherPersonagem(personagens):
     while True:
-        try: 
+        try:
+            for indice, personagem in enumerate(personagens, start=1):
+                print(f"{indice} - {personagem['nome']}")
+
             escolha = int(input("Escolha um personagem: "))
+            print("\n")
 
             if 1 <= escolha <= len(personagens):
-                return personagens[escolha - 1]
+                personagemEscolhido = personagens[escolha - 1]
+
+                informacaoDosPersonagens(personagemEscolhido)
+
+                confirmar = str(input("\nDeseja escolher ele mesmo (S/N): ")).strip().upper()
+
+                if confirmar == "S":
+                    return personagemEscolhido
+                else:
+                    print("\n")
+               
             else:
                 print("Personagem inexistente! Tente novamente.")
 
@@ -50,5 +58,19 @@ def escolher(personagens):
         except ValueError:
             print("Digite apenas números!")
 
+# Função exibir informação dos personagens
+def informacaoDosPersonagens(personagem):
+
+    print("=" * 35)
+    print(" " * 10 + f"{personagem['nome']}")
+    print("=" * 35)
+    print(f"Vida: {personagem["vida"]} | Ataque: {personagem["ataque"]} | Defesa: {personagem["defesa"]}\n")
+
+    print("HABILIDADES")
+    print("-" * 30)
+    for golpe in personagem["golpes"]:
+        print(f"- {golpe['nome']} | Dano: {golpe['dano']}")
+    print("-" * 30)
+
 personagens = [ichigo, ulquiorra]
-personagemEscolhido = escolher(personagens)
+personagemEscolhido = escolherPersonagem(personagens)
