@@ -1,12 +1,15 @@
 import random
+import time
+import os
 
 # Jogo de luta inspirado no anime Bleach
 
 # Função para criação dos personagens
-def criarPersonagem(nome, vida, ataque, defesa, golpes):
+def criarPersonagem(nome, vidaAtual, vidaMaxima , ataque, defesa, golpes):
     personagem = {
         "nome": nome,
-        "vida": vida,
+        "vida": vidaAtual,
+        "vidaMaxima": vidaMaxima,
         "ataque": ataque,
         "defesa": defesa,
         "golpes": golpes
@@ -16,9 +19,9 @@ def criarPersonagem(nome, vida, ataque, defesa, golpes):
 
 # Golpes e Transformações
 ichigoHabilidades = [
-    {"nome": "Getsuga Tenshou", "dano": 30},
     {"nome": "Estocada", "dano": 12},
-    ]
+    {"nome": "Getsuga Tenshou", "dano": 30},
+]
     
 ulquiorraHabilidades = [
     {"nome": "Estocada", "dano": 10},
@@ -26,15 +29,15 @@ ulquiorraHabilidades = [
 ]
 
 # Criando os personagens através da função criarPersonagem
-ichigo = criarPersonagem("Ichigo Kurosaki", 100, 5, 20, ichigoHabilidades)
-ulquiorra = criarPersonagem("Ulquiorra Ciffer", 100, 7, 18, ulquiorraHabilidades)
+ichigo = criarPersonagem("Ichigo Kurosaki", 100, 100 , 5, 20, ichigoHabilidades)
+ulquiorra = criarPersonagem("Ulquiorra Ciffer", 100, 100 ,7 , 18, ulquiorraHabilidades)
 
 # Função para escolha de personagem
 def escolherPersonagem(personagens):
     while True:
         try:
             for indice, personagem in enumerate(personagens, start=1):
-                print(f"{indice} - {personagem['nome']}")
+                print(f"{indice} - {personagem["nome"]}")
 
             escolha = int(input("Escolha um personagem: "))
             print("\n")
@@ -45,6 +48,7 @@ def escolherPersonagem(personagens):
                 informacaoDosPersonagens(personagemEscolhido)
 
                 confirmar = str(input("\nDeseja escolher ele mesmo (S/N): ")).strip().upper()
+                print("\n")
 
                 if confirmar == "S":
                     return personagemEscolhido
@@ -87,43 +91,66 @@ def escolherAdversario(personagens):
         except ValueError:
             print("Digite apenas números!")
 
+
 # Função para iniciar a luta
 def lutar(jogador, adversario):
+    # Limpar o terminal depois da escolha de personagens
+    os.system("cls")
+    os.system("clear")
+    rodada = 1
+
     print("Lutem!\n")
 
+    rodada = 1
     while jogador["vida"] > 0 and adversario["vida"] > 0:
-        print(f"{jogador["nome"]} - {jogador["vida"]}")
-        print(f"{adversario["nome"]} - {adversario["vida"]}\n")
+        print("=" * 20)
+        print(" " * 5 + f"RODADA {rodada}")
+        print("=" * 20)
+        print(f"{jogador["nome"]} - HP: {jogador["vida"]}")
+        print(f"{adversario["nome"]} - HP: {adversario["vida"]}\n")
 
         try:
             for indice, golpe in enumerate(jogador["golpes"], start=1):
                 print(f"{indice} - {golpe["nome"]} | Dano: {golpe["dano"]}")
 
-
+            print("=" * 10)
+            print("SUA RODADA")
+            print("=" * 10)
             # escolha de golpe do usuário
             escolhaGolpe = int(input("Escolha o golpe que deseja utilizar: "))
 
             if 1 <= escolhaGolpe <= len(jogador["golpes"]):
                 golpeEscolhido = jogador["golpes"][escolhaGolpe - 1]
 
-                vidaRestante = adversario["vida"] - golpeEscolhido["dano"]
+                vidaRestante = adversario["vidaAtual"] - golpeEscolhido["dano"]
 
                 adversario["vida"] = vidaRestante
 
+                time.sleep(1)
+                print(f"{jogador["nome"]} utilizou: {golpeEscolhido["nome"]}\n")
+
             else:
                 print("Golpe inexistente!")
+                continue
 
-            print(adversario["vida"])
+
+            print(f"vida atual de {adversario["nome"]} = {adversario["vidaAtual"]}\n")
 
             # escolha de golpe da IA
+            print("=" * 10)
+            print("RODADA DO ADVERSÁRIO")
+            print("=" * 10)
             if adversario["vida"] > 0:
                 golpeEscolhidoIA = escolherGolpeIA(adversario, jogador)
 
-                jogador["vida"] -= golpeEscolhidoIA["dano"]
+                jogador["vidaAtual"] -= golpeEscolhidoIA["dano"]
 
-                print(f"{adversario["nome"]} utilizou {golpeEscolhidoIA["nome"]}!")
+                time.sleep(1)
+                print(f"{adversario["nome"]} utilizou {golpeEscolhidoIA["nome"]}!\n")
 
-            print(jogador["vida"])
+            print(f"Vida atual de {jogador["nome"]} = {jogador["vidaAtual"]}\n")
+
+            rodada += 1
 
         except ValueError:
             print("Digite apenas números!")
@@ -131,7 +158,7 @@ def lutar(jogador, adversario):
 # Função para escolha de golpes do adversário
 def escolherGolpeIA(adversario, jogador):
     for golpe in adversario["golpes"]:
-        if golpe["dano"] >= jogador["vida"]:
+        if golpe["dano"] >= jogador["vidaAtual"]:
             return golpe
 
     return random.choice(adversario["golpes"])
@@ -142,15 +169,42 @@ def escolherGolpeIA(adversario, jogador):
 def informacaoDosPersonagens(personagem):
 
     print("=" * 35)
-    print(" " * 10 + f"{personagem['nome']}")
+    print(" " * 10 + f"{personagem["nome"]}")
     print("=" * 35)
-    print(f"Vida: {personagem["vida"]} | Ataque: {personagem["ataque"]} | Defesa: {personagem["defesa"]}\n")
+    print(f"Vida: {personagem["vidaMaxima"]} | Ataque: {personagem["ataque"]} | Defesa: {personagem["defesa"]}\n")
 
     print("HABILIDADES")
     print("-" * 30)
     for golpe in personagem["golpes"]:
         print(f"- {golpe['nome']} | Dano: {golpe['dano']}")
     print("-" * 30)
+
+# Função para exibir HP (health points) dos personagens
+def informacaoDaVidaDosPersonagens(personagem):
+    VERDE = "\033[32m"
+    AMARELO = "\033[33m"
+    VERMELHO = "\033[31m"
+    RESET = "\033[0m"
+
+    tamanhoDaBarra = 20 # Define tamanho da barra
+    proporcao = personagem["vidaAtual"] / personagem["vidaMaxima"] # faz o cálculo da divisão da vida atual pela vida máxima
+    
+    blocosPreenchidos = int(proporcao * tamanhoDaBarra) # faz o cálculo de multiplicação pra descobrir quantos caracteres serão preenchidos
+    blocosVazios = tamanhoDaBarra - blocosPreenchidos
+
+    barraPrenchida = "█" * blocosPreenchidos
+    barraVazia = "░" * blocosVazios
+
+    barra = barraPrenchida + barraVazia 
+
+    if proporcao > 0.5:
+        cor = VERDE
+    elif proporcao > 0.2:
+        cor = AMARELO
+    else:
+        cor = VERMELHO
+
+    print(cor + barra + RESET)
 
 
 personagens = [ichigo, ulquiorra]
