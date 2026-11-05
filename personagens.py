@@ -18,7 +18,7 @@ def criarPersonagem(nome, vidaAtual, vidaMaxima , ataque, defesa, golpes):
 # Golpes e Transformações
 ichigoHabilidades = [
     {"nome": "Estocada", "dano": 12},
-    {"nome": "Getsuga Tenshou", "dano": 30},
+    {"nome": "Getsuga Tenshou", "dano": 30}
 ]
     
 ulquiorraHabilidades = [

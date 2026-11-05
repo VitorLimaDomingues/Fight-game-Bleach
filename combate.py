@@ -45,9 +45,7 @@ def lutar(jogador, adversario):
             if 1 <= escolhaGolpe <= len(jogador["golpes"]):
                 golpeEscolhido = jogador["golpes"][escolhaGolpe - 1]
 
-                vidaRestante = adversario["vidaAtual"] - golpeEscolhido["dano"]
-
-                adversario["vidaAtual"] = vidaRestante
+                adversario["vidaAtual"] = max(0, adversario["vidaAtual"] - golpeEscolhido["dano"])
 
                 print(f"{jogador["nome"]} utilizou: {golpeEscolhido["nome"]}\n")
 
@@ -76,7 +74,7 @@ def lutar(jogador, adversario):
             if adversario["vidaAtual"] > 0:
                 golpeEscolhidoIA = escolherGolpeIA(adversario, jogador)
 
-                jogador["vidaAtual"] -= golpeEscolhidoIA["dano"]
+                jogador["vidaAtual"] = max(0, jogador["vidaAtual"] - golpeEscolhidoIA["dano"])
 
                 print(f"{adversario["nome"]} utilizou {golpeEscolhidoIA["nome"]}!")
 
