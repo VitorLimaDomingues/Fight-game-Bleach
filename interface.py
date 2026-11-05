@@ -58,3 +58,11 @@ def exibicaoRodadas(titulo="RODADA", rodada = None):
 {titulo:^{largura}}
 {"=" * largura}
 """)
+
+def exibirVitoria(vencedor):
+    largura = 30 # controla a formatação
+    mensagem = f"{vencedor["nome"]} VENCEU!"
+
+    print("=" * largura)
+    print(f"{mensagem:^{largura}}")
+    print("=" * largura)

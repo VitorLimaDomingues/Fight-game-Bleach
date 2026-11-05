@@ -1,6 +1,6 @@
 # Import das funções
 from ia import escolherGolpeIA
-from interface import exibirLifePoints, exibicaoRodadas
+from interface import exibirLifePoints, exibicaoRodadas, exibirVitoria
 
 # Import de bibliotecas
 import os
@@ -27,7 +27,7 @@ def lutar(jogador, adversario):
 
         try:
             # Exibe a rodada do player
-            exibicaoRodadas(titulo="SUA RODADA")
+            exibicaoRodadas(titulo="SEU TURNO")
 
             # Mostra as habilidades do personagem do player
             print("HABILIDADES")
@@ -58,9 +58,7 @@ def lutar(jogador, adversario):
                     exibirLifePoints(jogador, adversario)
 
                     # Mostra na tela que o player venceu
-                    print("=" * 25)
-                    print(f"{jogador["nome"]} VENCEU!")
-                    print("=" * 25)
+                    exibirVitoria(jogador)
                     break
 
                 time.sleep(1)
@@ -69,8 +67,9 @@ def lutar(jogador, adversario):
                 print("Golpe inexistente!")
                 continue
 
+
             # Exibe a rodada do adversário
-            exibicaoRodadas(titulo="RODADA DO ADVERSÁRIO")
+            exibicaoRodadas(titulo="TURNO DO ADVERSÁRIO")
             time.sleep(1)
             
             # escolha de habilidades da IA
@@ -81,17 +80,10 @@ def lutar(jogador, adversario):
 
                 print(f"{adversario["nome"]} utilizou {golpeEscolhidoIA["nome"]}!")
 
-                 # Condição pra verificar se o adversário já venceu
+                # Condição pra verificar se o adversário já venceu
                 if jogador["vidaAtual"] <= 0:
-                    # Exibe as informações relacionadas a vida de cada um
-                    exibirLifePoints(jogador, adversario)
-
-                    # Mostra na tela que o adversário venceu
-                    print("=" * 25)
-                    print(f"{adversario["nome"]} VENCEU!")
-                    print("=" * 25)
-                    break
-
+                    exibirVitoria(adversario)
+                    
                 time.sleep(1)
 
             # Incrementa o valor na variável rodadas
