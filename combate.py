@@ -1,6 +1,6 @@
 # Import das funções
 from ia import escolherGolpeIA
-from interface import informacaoDaVidaDosPersonagens
+from interface import informacaoDaVidaDosPersonagens, exibirLifePoints
 
 # Import de bibliotecas
 import os
@@ -23,12 +23,7 @@ def lutar(jogador, adversario):
         time.sleep(1)
 
         # Exibe as informações relacionadas a vida de cada um
-        print(f"{jogador["nome"]} | HP: {jogador["vidaAtual"]}")
-        informacaoDaVidaDosPersonagens(jogador)
-        print("\n") # pular linha
-        print(f"{adversario["nome"]} | HP: {adversario["vidaAtual"]}")
-        informacaoDaVidaDosPersonagens(adversario)
-        print("\n") # pular linha
+        exibirLifePoints(jogador, adversario)
 
         try:
             # Mostra as habilidades do personagem do player
@@ -61,12 +56,8 @@ def lutar(jogador, adversario):
                 # Condição pra verificar se o usuário já venceu
                 if adversario["vidaAtual"] <= 0:
                     # Exibe as informações relacionadas a vida de cada um
-                    print(f"{jogador["nome"]} | HP: {jogador["vidaAtual"]}")
-                    informacaoDaVidaDosPersonagens(jogador)
-                    print("\n") # pular linha
-                    print(f"{adversario["nome"]} | HP: {adversario["vidaAtual"]}")
-                    informacaoDaVidaDosPersonagens(adversario)
-                    print("\n") # pular linha
+                    exibirLifePoints(jogador, adversario)
+
                     # Mostra na tela que o player venceu
                     print("=" * 25)
                     print(f"{jogador["nome"]} VENCEU!")
@@ -96,12 +87,8 @@ def lutar(jogador, adversario):
                  # Condição pra verificar se o adversário já venceu
                 if jogador["vidaAtual"] <= 0:
                     # Exibe as informações relacionadas a vida de cada um
-                    print(f"{jogador["nome"]} | HP: {jogador["vidaAtual"]}")
-                    informacaoDaVidaDosPersonagens(jogador)
-                    print("\n") # pular linha
-                    print(f"{adversario["nome"]} | HP: {adversario["vidaAtual"]}")
-                    informacaoDaVidaDosPersonagens(adversario)
-                    print("\n") # pular linha
+                    exibirLifePoints(jogador, adversario)
+
                     # Mostra na tela que o adversário venceu
                     print("=" * 25)
                     print(f"{adversario["nome"]} VENCEU!")

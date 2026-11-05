@@ -39,3 +39,9 @@ def informacaoDaVidaDosPersonagens(personagem):
 
     print(cor + barra + RESET)
 
+def exibirLifePoints(jogador, adversario):
+    print(f"{jogador["nome"]} | HP: {jogador["vidaAtual"]}")
+    informacaoDaVidaDosPersonagens(jogador)
+    print("\n")
+    print(f"{adversario["nome"]} | HP: {adversario["vidaAtual"]}")
+    informacaoDaVidaDosPersonagens(adversario)
