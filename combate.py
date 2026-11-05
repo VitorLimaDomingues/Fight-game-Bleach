@@ -1,6 +1,6 @@
 # Import das funções
 from ia import escolherGolpeIA
-from interface import informacaoDaVidaDosPersonagens, exibirLifePoints
+from interface import exibirLifePoints, exibicaoRodadas
 
 # Import de bibliotecas
 import os
@@ -11,33 +11,32 @@ def lutar(jogador, adversario):
     # Limpar o terminal depois da escolha de personagens
     os.system("cls")
     os.system("clear")
-    rodada = 1
+
+    # Contador de rodadas
+    rodadas = 1
 
     print("Lutem!\n")
 
-    rodada = 1
     while jogador["vidaAtual"] > 0 and adversario["vidaAtual"] > 0:
-        print("=" * 20)
-        print(" " * 5 + f"RODADA {rodada}")
-        print("=" * 20)
+        # Função que exibe as rodadas
+        exibicaoRodadas(rodada = rodadas)
         time.sleep(1)
 
         # Exibe as informações relacionadas a vida de cada um
         exibirLifePoints(jogador, adversario)
 
         try:
+            # Exibe a rodada do player
+            exibicaoRodadas(titulo="SUA RODADA")
+
             # Mostra as habilidades do personagem do player
             print("HABILIDADES")
-            print("=" * 25)
+            print("-" * 30)
             for indice, golpe in enumerate(jogador["golpes"], start=1):
                 
                 print(f"{indice} - {golpe["nome"]} | Dano: {golpe["dano"]}")
 
-            print("=" * 25)
-            
-            print("=" * 10)
-            print("SUA RODADA")
-            print("=" * 10)
+            print("-" * 30)
 
             # escolha de habilidades do usuário
             escolhaGolpe = int(input("Escolha o golpe que deseja utilizar: "))
@@ -69,21 +68,19 @@ def lutar(jogador, adversario):
             else:
                 print("Golpe inexistente!")
                 continue
+
+            # Exibe a rodada do adversário
+            exibicaoRodadas(titulo="RODADA DO ADVERSÁRIO")
+            time.sleep(1)
             
             # escolha de habilidades da IA
-            print("=" * 20)
-            print("RODADA DO ADVERSÁRIO")
-            print("=" * 20)
-
-
             if adversario["vidaAtual"] > 0:
                 golpeEscolhidoIA = escolherGolpeIA(adversario, jogador)
 
                 jogador["vidaAtual"] -= golpeEscolhidoIA["dano"]
 
-                print(f"{adversario["nome"]} utilizou {golpeEscolhidoIA["nome"]}!\n")
+                print(f"{adversario["nome"]} utilizou {golpeEscolhidoIA["nome"]}!")
 
-                time.sleep(1)
                  # Condição pra verificar se o adversário já venceu
                 if jogador["vidaAtual"] <= 0:
                     # Exibe as informações relacionadas a vida de cada um
@@ -97,7 +94,8 @@ def lutar(jogador, adversario):
 
                 time.sleep(1)
 
-            rodada += 1
+            # Incrementa o valor na variável rodadas
+            rodadas += 1
 
         except ValueError:
             print("Digite apenas números!")

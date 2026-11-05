@@ -45,3 +45,16 @@ def exibirLifePoints(jogador, adversario):
     print("\n")
     print(f"{adversario["nome"]} | HP: {adversario["vidaAtual"]}")
     informacaoDaVidaDosPersonagens(adversario)
+    print("\n")
+
+def exibicaoRodadas(titulo="RODADA", rodada = None):
+    largura = 30 # controla a formatação das rodadas
+
+    if rodada is not None:
+        titulo = f"{titulo} {rodada}"
+
+    print(f"""
+{"=" * largura}
+{titulo:^{largura}}
+{"=" * largura}
+""")
