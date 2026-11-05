@@ -1,9 +1,11 @@
 import random
 
 # Função para escolha de golpes do adversário
-def escolherGolpeIA(adversario, jogador):
+def escolherGolpeIA(adversario, jogador, calcularDano):
     for golpe in adversario["golpes"]:
-        if golpe["dano"] >= jogador["vidaAtual"]:
+        danoEfetivo = calcularDano(adversario, jogador, golpe)
+
+        if danoEfetivo >= jogador["vidaAtual"]:
             return golpe
 
     return random.choice(adversario["golpes"])

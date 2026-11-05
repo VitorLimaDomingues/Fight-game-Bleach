@@ -62,6 +62,7 @@ def lutar(jogador, adversario):
 
                     # Mostra na tela que o player venceu
                     exibirVitoria(jogador)
+                    break
 
                 time.sleep(1)
 
@@ -76,7 +77,7 @@ def lutar(jogador, adversario):
             
             # escolha de habilidades da IA
             if adversario["vidaAtual"] > 0:
-                golpeEscolhidoIA = escolherGolpeIA(adversario, jogador)
+                golpeEscolhidoIA = escolherGolpeIA(adversario, jogador, calcularDano)
 
                 danoEfetivoIA = calcularDano(adversario, jogador, golpeEscolhidoIA)
                 jogador["vidaAtual"] = max(0, jogador["vidaAtual"] - danoEfetivoIA)
