@@ -27,8 +27,8 @@ ulquiorraHabilidades = [
 ]
 
 # Criando os personagens através da função criarPersonagem
-ichigo = criarPersonagem("Ichigo Kurosaki", 100, 100 , 5, 20, ichigoHabilidades)
-ulquiorra = criarPersonagem("Ulquiorra Ciffer", 100, 100 ,7 , 18, ulquiorraHabilidades)
+ichigo = criarPersonagem("Ichigo Kurosaki", 100, 100, 5, 7, ichigoHabilidades)
+ulquiorra = criarPersonagem("Ulquiorra Ciffer", 100, 100 , 7, 9, ulquiorraHabilidades)
 
 # Função para escolha de personagem
 def escolherPersonagem(personagens):

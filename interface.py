@@ -39,6 +39,7 @@ def informacaoDaVidaDosPersonagens(personagem):
 
     print(cor + barra + RESET)
 
+# Função para exibir o HP dos personagens
 def exibirLifePoints(jogador, adversario):
     print(f"{jogador["nome"]} | HP: {jogador["vidaAtual"]}")
     informacaoDaVidaDosPersonagens(jogador)
@@ -47,6 +48,7 @@ def exibirLifePoints(jogador, adversario):
     informacaoDaVidaDosPersonagens(adversario)
     print("\n")
 
+# Função para exibir as situações das rodadas
 def exibicaoRodadas(titulo="RODADA", rodada = None):
     largura = 30 # controla a formatação das rodadas
 
@@ -59,6 +61,7 @@ def exibicaoRodadas(titulo="RODADA", rodada = None):
 {"=" * largura}
 """)
 
+# Função para exibir o vencedor da batalha
 def exibirVitoria(vencedor):
     largura = 30 # controla a formatação
     mensagem = f"{vencedor["nome"]} VENCEU!"
@@ -66,3 +69,14 @@ def exibirVitoria(vencedor):
     print("=" * largura)
     print(f"{mensagem:^{largura}}")
     print("=" * largura)
+
+# Função para exibir as habilidades do personagem
+def exibirHabilidades(jogador):
+    largura = 30 # controla a formatação
+
+    print("HABILIDADES")
+    print("-" * largura)
+    for indice, golpe in enumerate(jogador["golpes"], start=1):
+        print(f"{indice} - {golpe["nome"]} | Dano: {golpe["dano"]}")
+    
+    print("-" * largura)

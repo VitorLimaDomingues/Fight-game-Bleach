@@ -1,10 +1,20 @@
 # Import das funções
 from ia import escolherGolpeIA
-from interface import exibirLifePoints, exibicaoRodadas, exibirVitoria
+from interface import exibirLifePoints, exibicaoRodadas, exibirVitoria, exibirHabilidades
 
 # Import de bibliotecas
 import os
 import time
+
+# Função para calcular o dano dos personagens
+def calcularDano(atacante, defensor, habilidade):
+
+    dano = atacante["ataque"] + habilidade["dano"]
+    danoBruto = dano - defensor["defesa"]
+    somaTotal = max(1, danoBruto)
+
+    return somaTotal
+
 
 # Função para iniciar a luta
 def lutar(jogador, adversario):
@@ -16,7 +26,6 @@ def lutar(jogador, adversario):
     rodadas = 1
 
     print("Lutem!\n")
-
     while jogador["vidaAtual"] > 0 and adversario["vidaAtual"] > 0:
         # Função que exibe as rodadas
         exibicaoRodadas(rodada = rodadas)
@@ -30,13 +39,7 @@ def lutar(jogador, adversario):
             exibicaoRodadas(titulo="SEU TURNO")
 
             # Mostra as habilidades do personagem do player
-            print("HABILIDADES")
-            print("-" * 30)
-            for indice, golpe in enumerate(jogador["golpes"], start=1):
-                
-                print(f"{indice} - {golpe["nome"]} | Dano: {golpe["dano"]}")
-
-            print("-" * 30)
+            exibirHabilidades(jogador)
 
             # escolha de habilidades do usuário
             escolhaGolpe = int(input("Escolha o golpe que deseja utilizar: "))
@@ -45,7 +48,9 @@ def lutar(jogador, adversario):
             if 1 <= escolhaGolpe <= len(jogador["golpes"]):
                 golpeEscolhido = jogador["golpes"][escolhaGolpe - 1]
 
-                adversario["vidaAtual"] = max(0, adversario["vidaAtual"] - golpeEscolhido["dano"])
+                # Calcula o dano do player
+                danoEfetivo = calcularDano(jogador, adversario, golpeEscolhido)
+                adversario["vidaAtual"] = max(0, adversario["vidaAtual"] - danoEfetivo)
 
                 print(f"{jogador["nome"]} utilizou: {golpeEscolhido["nome"]}\n")
 
@@ -57,7 +62,6 @@ def lutar(jogador, adversario):
 
                     # Mostra na tela que o player venceu
                     exibirVitoria(jogador)
-                    break
 
                 time.sleep(1)
 
@@ -74,12 +78,17 @@ def lutar(jogador, adversario):
             if adversario["vidaAtual"] > 0:
                 golpeEscolhidoIA = escolherGolpeIA(adversario, jogador)
 
-                jogador["vidaAtual"] = max(0, jogador["vidaAtual"] - golpeEscolhidoIA["dano"])
+                danoEfetivoIA = calcularDano(adversario, jogador, golpeEscolhidoIA)
+                jogador["vidaAtual"] = max(0, jogador["vidaAtual"] - danoEfetivoIA)
 
-                print(f"{adversario["nome"]} utilizou {golpeEscolhidoIA["nome"]}!")
+                print(f"{adversario["nome"]} utilizou {golpeEscolhidoIA["nome"]}!\n")
 
                 # Condição pra verificar se o adversário já venceu
                 if jogador["vidaAtual"] <= 0:
+                    # Exibe informações da vida dos personagens
+                    exibirLifePoints(jogador, adversario)
+
+                    # Exibe que o adversário venceu a batalha
                     exibirVitoria(adversario)
                     
                 time.sleep(1)
