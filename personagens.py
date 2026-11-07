@@ -17,18 +17,18 @@ def criarPersonagem(nome, vidaAtual, vidaMaxima , ataque, defesa, golpes):
 
 # Golpes e Transformações
 ichigoHabilidades = [
-    {"nome": "Estocada", "dano": 12},
-    {"nome": "Getsuga Tenshou", "dano": 30}
+    {"nome": "Estocada", "dano": 12, "cargas": 100},
+    {"nome": "Getsuga Tenshou", "dano": 25, "cargas": 3}
 ]
     
 ulquiorraHabilidades = [
-    {"nome": "Estocada", "dano": 10},
-    {"nome": "Cero", "dano": 20}
+    {"nome": "Estocada", "dano": 10, "cargas": 100},
+    {"nome": "Cero", "dano": 20, "cargas": 3}
 ]
 
 # Criando os personagens através da função criarPersonagem
-ichigo = criarPersonagem("Ichigo Kurosaki", 100, 100, 5, 7, ichigoHabilidades)
-ulquiorra = criarPersonagem("Ulquiorra Ciffer", 100, 100 , 7, 9, ulquiorraHabilidades)
+ichigo = criarPersonagem("Ichigo Kurosaki", 100, 100, 5, 8, ichigoHabilidades)
+ulquiorra = criarPersonagem("Ulquiorra Ciffer", 100, 100 , 7, 10, ulquiorraHabilidades)
 
 # Função para escolha de personagem
 def escolherPersonagem(personagens):

@@ -15,6 +15,44 @@ def calcularDano(atacante, defensor, habilidade):
 
     return somaTotal
 
+# Função para verificar se a habilidade tem cargas suficientes
+def verificarCargas(habilidade):
+    return habilidade["cargas"] > 0
+
+# Função para executar o turno do jogador
+def executarTurnoJogador(jogador, adversario):
+    # escolha de habilidades do usuário
+    escolhaGolpe = int(input("Escolha o golpe que deseja utilizar: "))
+
+    # Estrutura de condição para verificar se o golpe escolhido é válido
+    if 1 <= escolhaGolpe <= len(jogador["golpes"]):
+        golpeEscolhido = jogador["golpes"][escolhaGolpe - 1]
+
+        if not verificarCargas(golpeEscolhido):
+            print("Essa habilidade está sem cargas!")
+            return False
+
+        golpeEscolhido["cargas"] -= 1
+
+        # Calcula o dano do player
+        danoEfetivo = calcularDano(jogador, adversario, golpeEscolhido)
+        adversario["vidaAtual"] = max(0, adversario["vidaAtual"] - danoEfetivo)
+
+        print(f"{jogador["nome"]} utilizou: {golpeEscolhido["nome"]}\n")
+
+        time.sleep(1)
+        # Condição pra verificar se o usuário já venceu
+        if adversario["vidaAtual"] <= 0:
+            # Exibe as informações relacionadas a vida de cada um
+            exibirLifePoints(jogador, adversario)
+
+            # Mostra na tela que o player venceu
+            exibirVitoria(jogador)
+            
+            time.sleep(1)
+
+    else:
+        print("Golpe inexistente!")
 
 # Função para iniciar a luta
 def lutar(jogador, adversario):
@@ -41,35 +79,14 @@ def lutar(jogador, adversario):
             # Mostra as habilidades do personagem do player
             exibirHabilidades(jogador)
 
-            # escolha de habilidades do usuário
-            escolhaGolpe = int(input("Escolha o golpe que deseja utilizar: "))
+            # Verifica se o golpe escolhido pelo usuário existe e tem cargas
+            resultado = executarTurnoJogador(jogador, adversario)
 
-            # Estrutura de condição para verificar se o golpe escolhido é válido
-            if 1 <= escolhaGolpe <= len(jogador["golpes"]):
-                golpeEscolhido = jogador["golpes"][escolhaGolpe - 1]
-
-                # Calcula o dano do player
-                danoEfetivo = calcularDano(jogador, adversario, golpeEscolhido)
-                adversario["vidaAtual"] = max(0, adversario["vidaAtual"] - danoEfetivo)
-
-                print(f"{jogador["nome"]} utilizou: {golpeEscolhido["nome"]}\n")
-
-                time.sleep(1)
-                # Condição pra verificar se o usuário já venceu
-                if adversario["vidaAtual"] <= 0:
-                    # Exibe as informações relacionadas a vida de cada um
-                    exibirLifePoints(jogador, adversario)
-
-                    # Mostra na tela que o player venceu
-                    exibirVitoria(jogador)
-                    break
-
-                time.sleep(1)
-
-            else:
-                print("Golpe inexistente!")
+            # Se o golpe não existir ou não tiver cargas, retorna falso
+            if resultado is False:
                 continue
 
+            #### Transição de turno ###
 
             # Exibe a rodada do adversário
             exibicaoRodadas(titulo="TURNO DO ADVERSÁRIO")
@@ -77,7 +94,11 @@ def lutar(jogador, adversario):
             
             # escolha de habilidades da IA
             if adversario["vidaAtual"] > 0:
-                golpeEscolhidoIA = escolherGolpeIA(adversario, jogador, calcularDano)
+                # Permite a IA escolher um golpe
+                golpeEscolhidoIA = escolherGolpeIA(adversario, jogador, calcularDano, verificarCargas)
+
+                # Decrementa uma carga da habilidade usada da IA
+                golpeEscolhidoIA["cargas"] -= 1
 
                 danoEfetivoIA = calcularDano(adversario, jogador, golpeEscolhidoIA)
                 jogador["vidaAtual"] = max(0, jogador["vidaAtual"] - danoEfetivoIA)
