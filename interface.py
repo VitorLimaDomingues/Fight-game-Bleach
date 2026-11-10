@@ -1,16 +1,17 @@
 # Função exibir informação dos personagens
 def informacaoDosPersonagens(personagem):
-
     print("=" * 35)
     print(" " * 10 + f"{personagem["nome"]}")
     print("=" * 35)
-    print(f"Vida: {personagem["vidaMaxima"]} | Ataque: {personagem["ataque"]} | Defesa: {personagem["defesa"]}\n")
+    print(f"Vida: {personagem["vidaMaxima"]} | Ataque: {personagem["ataque"]} | Defesa: {personagem["defesa"]} | Velocidade: {personagem["velocidade"]}\n")
 
     print("HABILIDADES")
     print("-" * 30)
     for golpe in personagem["golpes"]:
         print(f"- {golpe['nome']} | Dano: {golpe['dano']}")
     print("-" * 30)
+
+########################
 
 # Função para exibir HP (health points) dos personagens
 def informacaoDaVidaDosPersonagens(personagem):
@@ -39,6 +40,8 @@ def informacaoDaVidaDosPersonagens(personagem):
 
     print(cor + barra + RESET)
 
+########################
+
 # Função para exibir o HP dos personagens
 def exibirLifePoints(jogador, adversario):
     print(f"{jogador["nome"]} | HP: {jogador["vidaAtual"]}")
@@ -47,6 +50,16 @@ def exibirLifePoints(jogador, adversario):
     print(f"{adversario["nome"]} | HP: {adversario["vidaAtual"]}")
     informacaoDaVidaDosPersonagens(adversario)
     print("\n")
+
+########################
+
+# Função para exibir apenas o lifepoint de UM personagem
+def exibirLifePointsUm(personagem):
+    print(f"{personagem["nome"]} | HP: {personagem["vidaAtual"]}")
+    informacaoDaVidaDosPersonagens(personagem)
+    print("\n")
+
+########################
 
 # Função para exibir as situações das rodadas
 def exibicaoRodadas(titulo="RODADA", rodada = None):
@@ -61,6 +74,8 @@ def exibicaoRodadas(titulo="RODADA", rodada = None):
 {"=" * largura}
 """)
 
+########################
+
 # Função para exibir o vencedor da batalha
 def exibirVitoria(vencedor):
     largura = 30 # controla a formatação
@@ -69,6 +84,8 @@ def exibirVitoria(vencedor):
     print("=" * largura)
     print(f"{mensagem:^{largura}}")
     print("=" * largura)
+
+########################
 
 # Função para exibir as habilidades do personagem
 def exibirHabilidades(jogador):
@@ -83,3 +100,5 @@ def exibirHabilidades(jogador):
             print(f"{indice} - {golpe["nome"]} | Dano: {golpe["dano"]}")
     
     print("-" * largura)
+
+########################

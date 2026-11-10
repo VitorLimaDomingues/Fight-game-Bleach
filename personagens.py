@@ -3,13 +3,14 @@ from interface import informacaoDosPersonagens
 import os
 
 # Função para criação dos personagens
-def criarPersonagem(nome, vidaAtual, vidaMaxima , ataque, defesa, golpes):
+def criarPersonagem(nome, vidaAtual, vidaMaxima , ataque, defesa, velocidade, golpes):
     personagem = {
         "nome": nome,
         "vidaAtual": vidaAtual,
         "vidaMaxima": vidaMaxima,
         "ataque": ataque,
         "defesa": defesa,
+        "velocidade": velocidade,
         "golpes": golpes
     }
 
@@ -27,8 +28,8 @@ ulquiorraHabilidades = [
 ]
 
 # Criando os personagens através da função criarPersonagem
-ichigo = criarPersonagem("Ichigo Kurosaki", 100, 100, 5, 8, ichigoHabilidades)
-ulquiorra = criarPersonagem("Ulquiorra Ciffer", 100, 100 , 7, 10, ulquiorraHabilidades)
+ichigo = criarPersonagem("Ichigo Kurosaki", 100, 100, 5, 8, 12, ichigoHabilidades)
+ulquiorra = criarPersonagem("Ulquiorra Ciffer", 100, 100 , 7, 10, 15, ulquiorraHabilidades)
 
 # Função para escolha de personagem
 def escolherPersonagem(personagens):
@@ -70,7 +71,6 @@ def escolherAdversario(personagens):
 
             escolha = int(input("Escolha seu adversário: "))
             print("\n")
-
 
             if 1 <= escolha <= len(personagens):
                 personagemAdversario = personagens[escolha - 1]

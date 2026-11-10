@@ -1,10 +1,11 @@
 # Import das funções
 from ia import escolherGolpeIA
-from interface import exibirLifePoints, exibicaoRodadas, exibirVitoria, exibirHabilidades
+from interface import exibirLifePoints, exibicaoRodadas, exibirVitoria, exibirHabilidades, exibirLifePointsUm
 
 # Import de bibliotecas
 import os
 import time
+import random
 
 # Função para calcular o dano dos personagens
 def calcularDano(atacante, defensor, habilidade):
@@ -43,6 +44,12 @@ def atualizarRecarga(personagem, habilidadeUtilizada):
 
 # Função para executar o turno do jogador
 def executarTurnoJogador(jogador, adversario):
+    # Exibe a rodada do player
+    exibicaoRodadas(titulo="SEU TURNO")
+
+    # Mostra as habilidades do personagem do player
+    exibirHabilidades(jogador)
+
     # escolha de habilidades do usuário
     escolhaGolpe = int(input("Escolha o golpe que deseja utilizar: "))
 
@@ -86,6 +93,11 @@ def executarTurnoJogador(jogador, adversario):
 
 # Função para executar o turnodaIA
 def executarTurnoIA(adversario, jogador):
+     # Exibe a rodada do adversário
+    exibicaoRodadas(titulo="TURNO DO ADVERSÁRIO")
+    
+    time.sleep(1)
+
     # escolha de habilidades da IA
     if adversario["vidaAtual"] > 0:
         # Permite a IA escolher um golpe
@@ -114,6 +126,22 @@ def executarTurnoIA(adversario, jogador):
 
 ########################
 
+# Função para determinar quem será o primeiro a executar o turno
+def determinarPrimeiro(jogador, adversario):
+    if jogador["velocidade"] > adversario["velocidade"]:
+        return "jogador"
+    elif adversario["velocidade"] > jogador["velocidade"]:
+        return "adversario"
+    else:
+        if jogador["ataque"] > adversario["ataque"]:
+            return "jogador"
+        elif adversario["ataque"] > jogador["ataque"]:
+            return "adversario"
+        else:
+            return random.choice(["jogador", "adversario"])
+
+########################
+
 # Função para iniciar a luta
 def lutar(jogador, adversario):
     # Limpar o terminal depois da escolha de personagens
@@ -131,41 +159,42 @@ def lutar(jogador, adversario):
 
         # Exibe as informações relacionadas a vida de cada um
         exibirLifePoints(jogador, adversario)
+        time.sleep(1.5)
+
+        # variável que recebe a função pra determinar quem vai começar primeiro
+        primeiro = determinarPrimeiro(jogador, adversario)
 
         try:
-            # Exibe a rodada do player
-            exibicaoRodadas(titulo="SEU TURNO")
+            # Se o player for mais rápido que o adversário, ele começa primeiro
+            if primeiro == "jogador":
 
-            # Mostra as habilidades do personagem do player
-            exibirHabilidades(jogador)
+                # Verifica se o golpe escolhido pelo usuário existe e tem cargas
+                resultadoJogador = executarTurnoJogador(jogador, adversario)
 
-            # Verifica se o golpe escolhido pelo usuário existe e tem cargas
-            resultado = executarTurnoJogador(jogador, adversario)
+                # Se o golpe não existir ou não tiver cargas, retorna falso
+                if resultadoJogador is False:
+                    continue
 
-            # Se o golpe não existir ou não tiver cargas, retorna falso
-            if resultado is False:
-                continue
+                # Verifica se o adversário perdeu a luta
+                if adversario["vidaAtual"] <= 0:
+                    break
 
-            # Verifica se o adversário perdeu a luta
-            if adversario["vidaAtual"] <= 0:
-                break
+                # Permite o adversário executar o turno dele
+                executarTurnoIA(adversario, jogador)
 
             #### Transição de turno ###
 
-            # Exibe a rodada do adversário
-            exibicaoRodadas(titulo="TURNO DO ADVERSÁRIO")
-            time.sleep(1)
+            # Se o adversário for mais rápido que o player, ele começa primeiro.
+            else:
+                # Verifica se o golpe escolhido pela IA existe e tem cargas
+                resultadoIA = executarTurnoIA(adversario, jogador)
 
-            # Verifica se o golpe escolhido pela IA existe e tem cargas
-            resultadoIA = executarTurnoIA(adversario, jogador)
+                # Verifica se o player perdeu a luta
+                if jogador["vidaAtual"] <= 0:
+                    break
 
-            # Se a habilidade não existir ou não tiver cargas, retorna falso
-            if resultadoIA is False:
-                continue
-
-            # Verifica se o player perdeu a luta
-            if jogador["vidaAtual"] <= 0:
-                break
+                # Permite que o player execute o turno dele
+                executarTurnoJogador(jogador, adversario)
 
             # Incrementa o valor na variável rodadas
             rodadas += 1
