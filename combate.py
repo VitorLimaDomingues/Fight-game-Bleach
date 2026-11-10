@@ -84,6 +84,36 @@ def executarTurnoJogador(jogador, adversario):
 
 ########################
 
+# Função para executar o turnodaIA
+def executarTurnoIA(adversario, jogador):
+    # escolha de habilidades da IA
+    if adversario["vidaAtual"] > 0:
+        # Permite a IA escolher um golpe
+        golpeEscolhidoIA = escolherGolpeIA(adversario, jogador, calcularDano, verificarCargas)
+
+        # Decrementa uma carga da habilidade usada da IA
+        if "cargas" in golpeEscolhidoIA:
+            golpeEscolhidoIA["cargas"] -= 1
+
+        atualizarRecarga(adversario, golpeEscolhidoIA)
+
+        danoEfetivoIA = calcularDano(adversario, jogador, golpeEscolhidoIA)
+        jogador["vidaAtual"] = max(0, jogador["vidaAtual"] - danoEfetivoIA)
+
+        print(f"{adversario["nome"]} utilizou {golpeEscolhidoIA["nome"]}!\n")
+
+        # Condição pra verificar se o adversário já venceu
+        if jogador["vidaAtual"] <= 0:
+            # Exibe informações da vida dos personagens
+            exibirLifePoints(jogador, adversario)
+
+            # Exibe que o adversário venceu a batalha
+            exibirVitoria(adversario)
+                    
+        time.sleep(1)
+
+########################
+
 # Função para iniciar a luta
 def lutar(jogador, adversario):
     # Limpar o terminal depois da escolha de personagens
@@ -125,32 +155,17 @@ def lutar(jogador, adversario):
             # Exibe a rodada do adversário
             exibicaoRodadas(titulo="TURNO DO ADVERSÁRIO")
             time.sleep(1)
-            
-            # escolha de habilidades da IA
-            if adversario["vidaAtual"] > 0:
-                # Permite a IA escolher um golpe
-                golpeEscolhidoIA = escolherGolpeIA(adversario, jogador, calcularDano, verificarCargas)
 
-                # Decrementa uma carga da habilidade usada da IA
-                if "cargas" in golpeEscolhidoIA:
-                    golpeEscolhidoIA["cargas"] -= 1
+            # Verifica se o golpe escolhido pela IA existe e tem cargas
+            resultadoIA = executarTurnoIA(adversario, jogador)
 
-                atualizarRecarga(adversario, golpeEscolhidoIA)
+            # Se a habilidade não existir ou não tiver cargas, retorna falso
+            if resultadoIA is False:
+                continue
 
-                danoEfetivoIA = calcularDano(adversario, jogador, golpeEscolhidoIA)
-                jogador["vidaAtual"] = max(0, jogador["vidaAtual"] - danoEfetivoIA)
-
-                print(f"{adversario["nome"]} utilizou {golpeEscolhidoIA["nome"]}!\n")
-
-                # Condição pra verificar se o adversário já venceu
-                if jogador["vidaAtual"] <= 0:
-                    # Exibe informações da vida dos personagens
-                    exibirLifePoints(jogador, adversario)
-
-                    # Exibe que o adversário venceu a batalha
-                    exibirVitoria(adversario)
-                    
-                time.sleep(1)
+            # Verifica se o player perdeu a luta
+            if jogador["vidaAtual"] <= 0:
+                break
 
             # Incrementa o valor na variável rodadas
             rodadas += 1
