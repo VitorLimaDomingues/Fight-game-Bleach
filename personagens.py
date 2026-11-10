@@ -17,13 +17,13 @@ def criarPersonagem(nome, vidaAtual, vidaMaxima , ataque, defesa, golpes):
 
 # Golpes e Transformações
 ichigoHabilidades = [
-    {"nome": "Estocada", "dano": 12, "cargas": 100},
-    {"nome": "Getsuga Tenshou", "dano": 25, "cargas": 3}
+    {"nome": "Estocada", "dano": 12},
+    {"nome": "Getsuga Tenshou", "dano": 25, "cargas": 3, "cargasMaximas": 3, "turnosSemUso": 0, "tempoRecarga": 2}
 ]
     
 ulquiorraHabilidades = [
-    {"nome": "Estocada", "dano": 10, "cargas": 100},
-    {"nome": "Cero", "dano": 20, "cargas": 3}
+    {"nome": "Estocada", "dano": 10},
+    {"nome": "Cero", "dano": 20, "cargas": 3, "cargasMaximas": 3, "turnosSemUso": 0, "tempoRecarga": 2}
 ]
 
 # Criando os personagens através da função criarPersonagem

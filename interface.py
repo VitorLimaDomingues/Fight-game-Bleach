@@ -77,6 +77,9 @@ def exibirHabilidades(jogador):
     print("HABILIDADES")
     print("-" * largura)
     for indice, golpe in enumerate(jogador["golpes"], start=1):
-        print(f"{indice} - {golpe["nome"]} | Dano: {golpe["dano"]} | Cargas: {golpe["cargas"]}")
+        if "cargas" in golpe:
+            print(f"{indice} - {golpe["nome"]} | Dano: {golpe["dano"]} | Cargas: {golpe["cargas"]}")
+        else:
+            print(f"{indice} - {golpe["nome"]} | Dano: {golpe["dano"]}")
     
     print("-" * largura)

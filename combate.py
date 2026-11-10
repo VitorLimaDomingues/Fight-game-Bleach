@@ -15,9 +15,31 @@ def calcularDano(atacante, defensor, habilidade):
 
     return somaTotal
 
+########################
+
 # Função para verificar se a habilidade tem cargas suficientes
 def verificarCargas(habilidade):
-    return habilidade["cargas"] > 0
+    return habilidade.get("cargas", 1) > 0
+
+########################
+
+# Função para recarregar as habilidades
+def atualizarRecarga(personagem, habilidadeUtilizada):
+    for habilidade in personagem["golpes"]:
+        if "cargas" not in habilidade:
+            continue
+
+        if habilidade is habilidadeUtilizada:
+            habilidade["turnosSemUso"] = 0
+        else:
+            if habilidade["cargas"] < habilidade["cargasMaximas"]:
+                habilidade["turnosSemUso"] += 1
+
+                if habilidade["turnosSemUso"] >= habilidade["tempoRecarga"]:
+                    habilidade["cargas"] += 1
+                    habilidade["turnosSemUso"] = 0
+
+########################
 
 # Função para executar o turno do jogador
 def executarTurnoJogador(jogador, adversario):
@@ -32,7 +54,10 @@ def executarTurnoJogador(jogador, adversario):
             print("Essa habilidade está sem cargas!")
             return False
 
-        golpeEscolhido["cargas"] -= 1
+        if "cargas" in golpeEscolhido:
+            golpeEscolhido["cargas"] -= 1
+
+        atualizarRecarga(jogador, golpeEscolhido)
 
         # Calcula o dano do player
         danoEfetivo = calcularDano(jogador, adversario, golpeEscolhido)
@@ -53,6 +78,11 @@ def executarTurnoJogador(jogador, adversario):
 
     else:
         print("Golpe inexistente!")
+        return False
+
+    return True
+
+########################
 
 # Função para iniciar a luta
 def lutar(jogador, adversario):
@@ -86,6 +116,10 @@ def lutar(jogador, adversario):
             if resultado is False:
                 continue
 
+            # Verifica se o adversário perdeu a luta
+            if adversario["vidaAtual"] <= 0:
+                break
+
             #### Transição de turno ###
 
             # Exibe a rodada do adversário
@@ -98,7 +132,10 @@ def lutar(jogador, adversario):
                 golpeEscolhidoIA = escolherGolpeIA(adversario, jogador, calcularDano, verificarCargas)
 
                 # Decrementa uma carga da habilidade usada da IA
-                golpeEscolhidoIA["cargas"] -= 1
+                if "cargas" in golpeEscolhidoIA:
+                    golpeEscolhidoIA["cargas"] -= 1
+
+                atualizarRecarga(adversario, golpeEscolhidoIA)
 
                 danoEfetivoIA = calcularDano(adversario, jogador, golpeEscolhidoIA)
                 jogador["vidaAtual"] = max(0, jogador["vidaAtual"] - danoEfetivoIA)
